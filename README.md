@@ -4,7 +4,7 @@
 
 [![license](http://img.shields.io/badge/license-apache_2.0-blue.svg?style=flat)](https://raw.githubusercontent.com/square/certigo/master/LICENSE)
 ![development status](https://img.shields.io/badge/status-alpha-orange.svg)
-[![build status](https://travis-ci.org/square/sharkey.svg?branch=master)](https://travis-ci.org/square/sharkey)
+[![tests](https://github.com/square/sharkey/actions/workflows/tests.yml/badge.svg)](https://github.com/square/sharkey/actions/workflows/tests.yml)
 [![report](https://goreportcard.com/badge/github.com/square/sharkey)](https://goreportcard.com/report/github.com/square/sharkey)
 
 Sharkey is a service for managing certificates for use by OpenSSH.
@@ -216,7 +216,7 @@ Configuration (example):
 
     # Command to restart ssh daemon for the host
     # If sudo is set as well, this command will be prefixed with 'sudo'
-    ssh_reload: ["service", "ssh", "restart"]
+    ssh_reload: ["/usr/sbin/service", "ssh", "restart"]
 
 OpenSSH will have to be configured to read the signed host certificate (this is
 with the `HostCertificate` config option in `sshd_config`). If the signed host

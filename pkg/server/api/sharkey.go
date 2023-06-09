@@ -18,9 +18,11 @@ package api
 
 import (
 	"encoding/json"
-	"github.com/square/sharkey/pkg/server/cert"
-	"io/ioutil"
 	"net/http"
+	"os"
+	"time"
+
+	"github.com/square/sharkey/pkg/server/cert"
 
 	_ "bitbucket.org/liamstask/goose/lib/goose"
 	"github.com/gorilla/handlers"
@@ -51,7 +53,7 @@ type Api struct {
 
 func Run(conf *config.Config, logger *logrus.Logger) {
 	logger.Print("Starting http server")
-	privateKey, err := ioutil.ReadFile(conf.SigningKey)
+	privateKey, err := os.ReadFile(conf.SigningKey)
 	if err != nil {
 		logger.WithError(err).Fatal("unable to read signing key file")
 	}
@@ -100,9 +102,10 @@ func Run(conf *config.Config, logger *logrus.Logger) {
 		logger.WithError(err).Fatal("issue with BuildTLS")
 	}
 	server := &http.Server{
-		Addr:      conf.ListenAddr,
-		TLSConfig: tlsConfig,
-		Handler:   loggingHandler,
+		Addr:        conf.ListenAddr,
+		TLSConfig:   tlsConfig,
+		Handler:     loggingHandler,
+		IdleTimeout: time.Minute * 5,
 	}
 
 	if c.conf.GitHub.SyncEnabled {
